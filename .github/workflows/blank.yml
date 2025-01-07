@@ -23,5 +23,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: build
-        shell: powershell
-        run: wsl ./buildall.sh 1 $NUMBER_OF_PROCESSORS R N
+        shell: wsl
+        run: |-
+
+          set -ex
+
+          sudo apt update
+          sudo apt install -y python3
+
+          ./buildall.sh 1 $NUMBER_OF_PROCESSORS R N
