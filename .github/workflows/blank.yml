@@ -26,19 +26,16 @@ jobs:
 
           wsl which MSBuild.exe
           wsl which python.exe
+          wsl which perl.exe
 
       - name: setup tools
         run: |-
 
           Set-PSDebug -Trace 2
 
-          choco install -y strawberryperl
-          ren C:\Strawberry C:\Perl
-
-          choco install -y nsis
-
+          choco install nasm
           wsl which nasm.exe
-          wsl which perl.exe
+
   
       - name: checkout
         uses: actions/checkout@v4
@@ -52,4 +49,4 @@ jobs:
           wsl sudo apt update
           wsl sudo apt install -y python3 python-is-python3
 
-          wsl ./buildall.sh 1 $NUMBER_OF_PROCESSORS R N
+          wsl bash -e ./buildall.sh 1 $NUMBER_OF_PROCESSORS R N
