@@ -18,6 +18,27 @@ jobs:
 
       - name: disable autocrlf
         run: git config --global core.autocrlf input
+
+      - name: test pre-installed tools
+        run: |-
+
+          Set-PSDebug -Trace 2
+
+          wsl which MSBuild.exe
+          wsl which python.exe
+
+      - name: setup tools
+        run: |-
+
+          Set-PSDebug -Trace 2
+
+          choco install -y strawberryperl
+          ren C:\Strawberry C:\Perl
+
+          choco install -y nsis
+
+          wsl which nasm.exe
+          wsl which perl.exe
   
       - name: checkout
         uses: actions/checkout@v4
@@ -29,6 +50,6 @@ jobs:
           Set-PSDebug -Trace 2
 
           wsl sudo apt update
-          wsl sudo apt install -y python3
+          wsl sudo apt install -y python3 python-is-python3
 
           wsl ./buildall.sh 1 $NUMBER_OF_PROCESSORS R N
