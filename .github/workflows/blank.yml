@@ -31,7 +31,6 @@ jobs:
 
           Set-PSDebug -Trace 2
 
-          wsl sudo apt update
-          wsl sudo apt install -y python3 python-is-python3
+          wsl sudo ln -s /usr/bin/python3 /usr/bin/python
 
-          wsl bash -exv ./buildall.sh 1 $(( $(nproc) + 1 )) R N
+          wsl bash -exv ./buildall.sh 1 $(( $(nproc) + 1 )) R
