@@ -21,4 +21,4 @@ jobs:
       - name: Run a multi-line scrip
         shell: powershell
         run: |
-          wsl ./buildall.sh 1 $NUMBER_OF_PROCESSORS R N
+          ./buildall.sh 1 $NUMBER_OF_PROCESSORS R N
