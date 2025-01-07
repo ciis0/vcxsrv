@@ -17,7 +17,8 @@ jobs:
         shell: powershell
         run: |
 
-          wsl --list --online
+          wsl --update
+          
           wsl --install --distribution Ubuntu-24.04
           wsl --set-default Ubuntu-24.04
           wsl --update
