@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+  workflow_dispatch:
+  
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run a multi-line scrip
+        shell: powershell
+        run: |
+          wsl ./buildall.cmd 1 $NUMBER_OF_PROCESSORS R N
