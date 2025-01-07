@@ -13,19 +13,9 @@ jobs:
     runs-on: windows-2022
     steps:
 
-      - name: WSL Setup
-        run: |
-
-          wsl --set-default-version 2
-          
-          wsl --update
-          wsl --status
-          
-          wsl --install --distribution Ubuntu-24.04
-          wsl --set-default Ubuntu-24.04
-
-          wsl cat /etc/os-release
-
+      - name: Setup WSL2
+        uses: vedantmgoyal9/setup-wsl2@v1.1.0
+  
       - uses: actions/checkout@v4
 
       - name: Run a multi-line scrip
