@@ -16,27 +16,12 @@ jobs:
       - name: Setup WSL2
         uses: vedantmgoyal9/setup-wsl2@v1.1.0
 
+      - name: Set up NASM
+        uses: ilammy/setup-nasm@v1.5.1
+
       - name: disable autocrlf
         run: git config --global core.autocrlf input
-
-      - name: test pre-installed tools
-        run: |-
-
-          Set-PSDebug -Trace 2
-
-          wsl which MSBuild.exe
-          wsl which python.exe
-          wsl which perl.exe
-
-      - name: setup tools
-        run: |-
-
-          Set-PSDebug -Trace 2
-
-          choco install nasm
-          wsl which nasm.exe
-
-  
+      
       - name: checkout
         uses: actions/checkout@v4
 
