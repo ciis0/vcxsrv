@@ -28,6 +28,7 @@ jobs:
           curl.exe -fsSL http://download.qt.io/official_releases/jom/jom.zip -o C:\jom\jom.zip
 
       - name: JOM Cache Save
+        if: steps.jom-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4.2.0
         with: 
           key: jom
@@ -41,7 +42,7 @@ jobs:
         uses: actions/github-script@v7.0.1
         with:
           script: |-
-            core.addPath('C:\jom');
+            core.addPath('C:\\jom');
 
       - name: test jom (pwsh)
         run: gcm jom
