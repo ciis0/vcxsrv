@@ -73,4 +73,4 @@ jobs:
 
           wsl sudo
 
-          wsl bash -exv ./buildall.sh 1 $(( $(nproc) + 1 )) R
+          wsl bash -exv ./buildall.sh 1 9 R
