@@ -13,6 +13,8 @@ jobs:
     runs-on: windows-2022
     steps:
 
+      # region JOM
+
       - name: JOM Cache Restore
         id: jom-cache
         uses: actions/cache/restore@v4.2.0
@@ -46,6 +48,37 @@ jobs:
 
       - name: test jom (pwsh)
         run: gcm jom
+
+      # endregion
+
+      # region winflexbison
+
+      - name: winflexbison Cache Restore
+        id: winflexbison-cache
+        uses: actions/cache/restore@v4.2.0
+        with: 
+          key: winflexbison
+          path: |-
+            C:\winflexbison\winflexbison.zip
+
+      - name: winflexbison Download
+        if: steps.winflexbison-cache.outputs.cache-hit != 'true'
+        run: |-
+          md C:\winflexbison
+          curl.exe -fsSL https://github.com/lexxmark/winflexbison/releases/download/v2.5.25/win_flex_bison-2.5.25.zip -o C:\winflexbison\winflexbison.zip
+
+      - name: winflexbison Cache Save
+        if: steps.winflexbison-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4.2.0
+        with: 
+          key: winflexbison
+          path: |-
+            C:\winflexbison\winflexbison.zip
+
+      - name: winflexbison extract
+        run: Expand-Archive C:\winflexbison\winflexbison.zip -DestinationPath C:\winflexbison
+
+      # endregion
 
       - name: Setup WSL2
         uses: vedantmgoyal9/setup-wsl2@v1.1.0
