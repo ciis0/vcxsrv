@@ -13,15 +13,6 @@ jobs:
     runs-on: windows-2022
     steps:
 
-      - name: Setup WSL2
-        uses: vedantmgoyal9/setup-wsl2@v1.1.0
-
-      - name: Set up NASM
-        uses: ilammy/setup-nasm@v1.5.1
-
-      - name: disable autocrlf
-        run: git config --global core.autocrlf input
-
       - name: dependencies for github script
         run:
           npm install -g @actions/tool-cache @actions/cache
@@ -45,11 +36,22 @@ jobs:
         with:
           script: |-
             const tc = require('@actions/tool-cache');
-
             const jomExtracted = await tc.extractZip('C:/jom/jom.zip', 'C:/jom');
             core.addPath('C:\jom');
 
-      - name: test jom
+      - name: test jom (pwsh)
+        run: gcm jom
+
+      - name: Setup WSL2
+        uses: vedantmgoyal9/setup-wsl2@v1.1.0
+
+      - name: Set up NASM
+        uses: ilammy/setup-nasm@v1.5.1
+
+      - name: disable autocrlf
+        run: git config --global core.autocrlf input
+
+      - name: test jom (wsl)
         run:
           wsl which jom.exe
 
