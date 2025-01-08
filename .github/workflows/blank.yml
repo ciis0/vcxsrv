@@ -25,7 +25,14 @@ jobs:
         if: steps.jom-cache.outputs.cache-hit != 'true'
         run: |-
           md C:\jom
-          curl.exe http://download.qt.io/official_releases/jom/jom.zip -o C:\jom\jom.zip
+          curl.exe -fsSL http://download.qt.io/official_releases/jom/jom.zip -o C:\jom\jom.zip
+
+      - name: JOM Cache Save
+        uses: actions/cache/save@v4.2.0
+        with: 
+          key: jom
+          path: |-
+            C:\jom\jom.zip
 
       - name: JOM extract
         run: Expand-Archive C:\jom\jom.zip -DestinationPath C:\jom
