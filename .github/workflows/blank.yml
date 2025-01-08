@@ -13,10 +13,6 @@ jobs:
     runs-on: windows-2022
     steps:
 
-      - name: dependencies for github script
-        run:
-          npm install -g @actions/tool-cache @actions/cache
-
       - name: JOM Cache Restore
         id: jom-cache
         uses: actions/cache/restore@v4.2.0
@@ -31,12 +27,13 @@ jobs:
           md C:\jom
           curl.exe http://download.qt.io/official_releases/jom/jom.zip -o C:\jom\jom.zip
 
-      - name: Install JOM
+      - name: JOM extract
+        run: Expand-Archive C:\jom\jom.zip -DestinationPath C:\jom
+
+      - name: Add JOM to PATH
         uses: actions/github-script@v7.0.1
         with:
           script: |-
-            const tc = require('@actions/tool-cache');
-            const jomExtracted = await tc.extractZip('C:/jom/jom.zip', 'C:/jom');
             core.addPath('C:\jom');
 
       - name: test jom (pwsh)
