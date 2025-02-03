@@ -96,6 +96,26 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
 
+      # region openssl-cache
+
+      - name: Get Subdirectory Tree ID
+        id: openssl-tree-id
+        run: |
+          $treeId = git rev-parse HEAD^{tree}:openssl
+          echo "OPENSSL_TREE_ID=$treeId" >> $GITHUB_ENV
+
+      - name: Cache openssl
+        id: cache
+        if: always()
+        uses: actions/cache@v3
+        with:
+          # Define the path to cache
+          path: openssl
+          # Create a cache key based on the subdirectory tree ID
+          key: openssl-${{ env.OPENSSL_TREE_ID }}
+
+      # endregion
+
       - name: build
         shell: pwsh
         run: |-
@@ -107,3 +127,9 @@ jobs:
           wsl sudo
 
           wsl bash -exv ./buildall.sh 1 9 R
+
+      - name: tree
+        shell: pwsh
+        if: always()
+        run: |-
+          tree /F
