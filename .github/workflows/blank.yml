@@ -80,21 +80,13 @@ jobs:
 
       # endregion
 
-      - name: Setup WSL2
-        uses: vedantmgoyal9/setup-wsl2@v1.1.0
-
-      - name: Set up NASM
-        uses: ilammy/setup-nasm@v1.5.1
-
+      # region checkout
       - name: disable autocrlf
         run: git config --global core.autocrlf input
 
-      - name: test jom (wsl)
-        run:
-          wsl which jom.exe
-
       - name: checkout
         uses: actions/checkout@v4
+      # endregion
 
       # region openssl-cache
 
@@ -116,6 +108,19 @@ jobs:
 
       # endregion
 
+      # region wsl
+      - name: Setup WSL2
+        uses: vedantmgoyal9/setup-wsl2@v1.1.0
+
+      - name: Set up NASM
+        uses: ilammy/setup-nasm@v1.5.1
+
+      - name: test jom (wsl)
+        run:
+          wsl which jom.exe
+
+      # endregion
+
       - name: build
         shell: pwsh
         run: |-
@@ -132,7 +137,7 @@ jobs:
         shell: pwsh
         if: always()
         run: |-
-          tree /F
+          tree /F /A
 
       - name: openssl cache save
         id: cache-openssl-save
