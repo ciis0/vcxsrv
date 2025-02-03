@@ -105,7 +105,7 @@ jobs:
           echo "OPENSSL_TREE_ID=$treeId" >> $GITHUB_ENV
 
       - name: openssl cache restore
-        id: cache
+        id: cache-openssl-restore
         uses: actions/cache/restore@v3
         with:
           # Define the path to cache
@@ -134,7 +134,7 @@ jobs:
           tree /F
 
       - name: openssl cache save
-        id: cache
+        id: cache-openssl-save
         uses: actions/cache/save@v3
         if: always()
         with:
