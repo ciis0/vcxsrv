@@ -13,7 +13,7 @@ export PATH=/usr/local/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/ga
 fi
 rm -f commands.sh
 export MHMAKECONF=$DIR
-REM FIXME: In actions Python 3.9 is simply on PATH, but likely breaks local assumptions
+# FIXME: In actions Python 3.9 is simply on PATH, but likely breaks local assumptions
 export PYTHON3=$(which python.exe)
 export IS64=$1
 

@@ -102,6 +102,7 @@ jobs:
         id: openssl-tree-id
         run: |
           $treeId = git rev-parse "HEAD^{tree}:openssl"
+          echo $treeId
           echo "OPENSSL_TREE_ID=$treeId" >> $GITHUB_ENV
 
       - name: openssl cache restore
