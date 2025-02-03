@@ -129,7 +129,7 @@ jobs:
 
           wsl sudo ln -s /usr/bin/python3 /usr/bin/python
 
-          wsl sudo
+          wsl sudo apt-get install gperf -y
 
           wsl bash -exv ./buildall.sh 1 9 R
 
