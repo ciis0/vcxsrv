@@ -13,11 +13,6 @@ jobs:
     runs-on: windows-2022
     steps:
 
-      - name: debug mhmake
-        run: |-
-          (get-command python.exe).Path
-          ls c:\Python39\python.exe
-
       # region JOM
 
       - name: JOM Cache Restore

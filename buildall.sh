@@ -52,7 +52,7 @@ check-error 'Make sure that python.exe is in the PATH. (e.g. cp /usr/bin/python2
 which perl.exe > /dev/null 2>&1
 check-error 'Please install strawberry perl portable edition into c:\perl'
 
-# tmp mhmake debug
+# FIXME for testing currently built unconditionally at start
 MSBuild.exe tools/mhmake/mhmakevc10.sln -t:Build -p:Configuration=Release -p:Platform=x64 -m:$2
 
 # echo script lines from now one
@@ -153,7 +153,8 @@ if [[ "$IS64" == "1" ]]; then
   if [[ "$BUILDDEPS" == "1" ]]; then
 
   	if [[ "$BUILDRELEASE" == "1" ]]; then
-  		MSBuild.exe tools/mhmake/mhmakevc10.sln -t:Build -p:Configuration=Release -p:Platform=x64 -m:$2
+		# FIXME for testing currently built unconditionally at start
+  		#MSBuild.exe tools/mhmake/mhmakevc10.sln -t:Build -p:Configuration=Release -p:Platform=x64 -m:$2
       wait
   		check-error 'Error compiling mhmake for release'
   	fi
