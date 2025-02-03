@@ -101,13 +101,12 @@ jobs:
       - name: Get Subdirectory Tree ID
         id: openssl-tree-id
         run: |
-          $treeId = git rev-parse HEAD^{tree}:openssl
+          $treeId = git rev-parse "HEAD^{tree}:openssl"
           echo "OPENSSL_TREE_ID=$treeId" >> $GITHUB_ENV
 
-      - name: Cache openssl
+      - name: openssl cache restore
         id: cache
-        if: always()
-        uses: actions/cache@v3
+        uses: actions/cache/restore@v3
         with:
           # Define the path to cache
           path: openssl
@@ -133,3 +132,13 @@ jobs:
         if: always()
         run: |-
           tree /F
+
+      - name: openssl cache save
+        id: cache
+        uses: actions/cache/save@v3
+        if: always()
+        with:
+          # Define the path to cache
+          path: openssl
+          # Create a cache key based on the subdirectory tree ID
+          key: openssl-${{ env.OPENSSL_TREE_ID }}
