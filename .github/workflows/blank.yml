@@ -79,7 +79,7 @@ jobs:
         run: Expand-Archive C:\winflexbison\winflexbison.zip -DestinationPath C:\winflexbison
 
       - name: debug winflexbison
-        run:
+        run: |-
           ls c:\winflexbison
           ls c:\winflexbison\win_bison.exe
           ls c:\winflexbison\win_flex.exe
