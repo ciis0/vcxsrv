@@ -1,4 +1,4 @@
-@echo off
+REM @echo off
 setlocal
 
 set BISON_PKGDATADIR=src/bisondata

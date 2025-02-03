@@ -79,7 +79,12 @@ jobs:
         run: Expand-Archive C:\winflexbison\winflexbison.zip -DestinationPath C:\winflexbison
 
       - name: debug winflexbison
-        run: ls c:\winflexbison
+        run:
+          ls c:\winflexbison
+          ls c:\winflexbison\win_bison.exe
+          ls c:\winflexbison\win_flex.exe
+          ls c:\Python39\python.exe
+          MSBuild.exe tools/mhmake/mhmakevc10.sln -t:Build -p:Configuration=Release -p:Platform=x64 -m:$2
 
       # endregion
 
