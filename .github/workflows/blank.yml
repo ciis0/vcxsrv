@@ -13,6 +13,11 @@ jobs:
     runs-on: windows-2022
     steps:
 
+      - name: debug mhmake
+        run: |-
+          (get-command python.exe).Path
+          ls c:\Python39\python.exe
+
       # region JOM
 
       - name: JOM Cache Restore
@@ -77,13 +82,6 @@ jobs:
 
       - name: winflexbison extract
         run: Expand-Archive C:\winflexbison\winflexbison.zip -DestinationPath C:\winflexbison
-
-      - name: debug winflexbison
-        run: |-
-          ls c:\winflexbison
-          ls c:\winflexbison\win_bison.exe
-          ls c:\winflexbison\win_flex.exe
-          ls c:\Python39\python.exe
 
       # endregion
 
