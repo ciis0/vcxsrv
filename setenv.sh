@@ -13,7 +13,8 @@ export PATH=/usr/local/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/ga
 fi
 rm -f commands.sh
 export MHMAKECONF=$DIR
-export PYTHON3=/mnt/c/Python39/python.exe
+# FIXME: In actions Python 3.9 is simply on PATH, but likely breaks local assumptions
+export PYTHON3=$(which python.exe)
 export IS64=$1
 
 export CFLAGS="-FS"

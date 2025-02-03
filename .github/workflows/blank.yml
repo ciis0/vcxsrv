@@ -1,0 +1,150 @@
+name: CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+  workflow_dispatch:
+  
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+
+      # region JOM
+
+      - name: JOM Cache Restore
+        id: jom-cache
+        uses: actions/cache/restore@v4.2.0
+        with: 
+          key: jom
+          path: |-
+            C:\jom\jom.zip
+
+      - name: JOM Download
+        if: steps.jom-cache.outputs.cache-hit != 'true'
+        run: |-
+          md C:\jom
+          curl.exe -fsSL http://download.qt.io/official_releases/jom/jom.zip -o C:\jom\jom.zip
+
+      - name: JOM Cache Save
+        if: steps.jom-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4.2.0
+        with: 
+          key: jom
+          path: |-
+            C:\jom\jom.zip
+
+      - name: JOM extract
+        run: Expand-Archive C:\jom\jom.zip -DestinationPath C:\jom
+
+      - name: Add JOM to PATH
+        uses: actions/github-script@v7.0.1
+        with:
+          script: |-
+            core.addPath('C:\\jom');
+
+      - name: test jom (pwsh)
+        run: gcm jom
+
+      # endregion
+
+      # region winflexbison
+
+      - name: winflexbison Cache Restore
+        id: winflexbison-cache
+        uses: actions/cache/restore@v4.2.0
+        with: 
+          key: winflexbison
+          path: |-
+            C:\winflexbison\winflexbison.zip
+
+      - name: winflexbison Download
+        if: steps.winflexbison-cache.outputs.cache-hit != 'true'
+        run: |-
+          md C:\winflexbison
+          curl.exe -fsSL https://github.com/lexxmark/winflexbison/releases/download/v2.5.25/win_flex_bison-2.5.25.zip -o C:\winflexbison\winflexbison.zip
+
+      - name: winflexbison Cache Save
+        if: steps.winflexbison-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4.2.0
+        with: 
+          key: winflexbison
+          path: |-
+            C:\winflexbison\winflexbison.zip
+
+      - name: winflexbison extract
+        run: Expand-Archive C:\winflexbison\winflexbison.zip -DestinationPath C:\winflexbison
+
+      # endregion
+
+      # region checkout
+      - name: disable autocrlf
+        run: git config --global core.autocrlf input
+
+      - name: checkout
+        uses: actions/checkout@v4
+      # endregion
+
+      # region openssl-cache
+
+      - name: Get Subdirectory Tree ID
+        id: openssl-tree-id
+        run: |
+          $treeId = git rev-parse "HEAD^{tree}:openssl"
+          echo $treeId
+          echo "OPENSSL_TREE_ID=$treeId" >> $GITHUB_ENV
+
+      - name: openssl cache restore
+        id: cache-openssl-restore
+        uses: actions/cache/restore@v3
+        with:
+          # Define the path to cache
+          path: openssl
+          # Create a cache key based on the subdirectory tree ID
+          key: openssl-${{ env.OPENSSL_TREE_ID }}
+
+      # endregion
+
+      # region wsl
+      - name: Setup WSL2
+        uses: vedantmgoyal9/setup-wsl2@v1.1.0
+
+      - name: Set up NASM
+        uses: ilammy/setup-nasm@v1.5.1
+
+      - name: test jom (wsl)
+        run:
+          wsl which jom.exe
+
+      # endregion
+
+      - name: build
+        shell: pwsh
+        run: |-
+
+          Set-PSDebug -Trace 2
+
+          wsl sudo ln -s /usr/bin/python3 /usr/bin/python
+
+          wsl sudo apt-get install gperf -y
+
+          wsl bash -exv ./buildall.sh 1 9 R
+
+      - name: tree
+        shell: pwsh
+        if: always()
+        run: |-
+          tree /F /A
+
+      - name: openssl cache save
+        id: cache-openssl-save
+        uses: actions/cache/save@v3
+        if: always()
+        with:
+          # Define the path to cache
+          path: openssl
+          # Create a cache key based on the subdirectory tree ID
+          key: openssl-${{ env.OPENSSL_TREE_ID }}
