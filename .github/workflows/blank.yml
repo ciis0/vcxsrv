@@ -78,6 +78,9 @@ jobs:
       - name: winflexbison extract
         run: Expand-Archive C:\winflexbison\winflexbison.zip -DestinationPath C:\winflexbison
 
+      - name: debug winflexbison
+        run: ls c:\winflexbison
+
       # endregion
 
       - name: Setup WSL2
